@@ -44,9 +44,18 @@ public class Reserva {
 		
 	}
 	
-	public void dataAtualizada(Date entrada, Date saida) {
+	public String dataAtualizada(Date entrada, Date saida) {
+		
+		Date agora = new Date();
+	    if(entrada.before(agora) || saida.before(agora)) {
+	    	return "As datas a serem atualizadas devem ser datas futuras!";
+	    }
+	    if(!saida.after(entrada)) {
+			return "Data de saída deve ser posterior a data de entrada! ";
+		}
 		this.entrada = entrada;
 		this.saida = saida;
+		return null;
 	}
 	
 	@Override
