@@ -1,8 +1,11 @@
 package modelo.entidades;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import modelo.exceções.DominioExcecao;
 
 public class Reserva {
 
@@ -16,7 +19,10 @@ public class Reserva {
 		
 	}
 	
-	public Reserva(Integer numeroQuarto, Date entrada, Date saida) {
+	public Reserva(Integer numeroQuarto, Date entrada, Date saida) throws DominioExcecao {
+		if(!saida.after(entrada)) {
+	    	throw new DominioExcecao("Data de saída deve ser posterior a data de entrada! ");
+		}
 		this.numeroQuarto = numeroQuarto;
 		this.entrada = entrada;
 		this.saida = saida;
@@ -44,18 +50,17 @@ public class Reserva {
 		
 	}
 	
-	public String dataAtualizada(Date entrada, Date saida) {
+	public void dataAtualizada(Date entrada, Date saida) throws DominioExcecao {
 		
 		Date agora = new Date();
 	    if(entrada.before(agora) || saida.before(agora)) {
-	    	return "As datas a serem atualizadas devem ser datas futuras!";
+	    	throw new DominioExcecao("As datas a serem atualizadas devem ser datas futuras!");
 	    }
 	    if(!saida.after(entrada)) {
-			return "Data de saída deve ser posterior a data de entrada! ";
+	    	throw new DominioExcecao("Data de saída deve ser posterior a data de entrada! ");
 		}
 		this.entrada = entrada;
 		this.saida = saida;
-		return null;
 	}
 	
 	@Override
